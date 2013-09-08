@@ -1,14 +1,17 @@
 <?php
 
 /*
-Plugin Name: Custom Multisite Signups Extras St Theresa
+Plugin Name:       Custom Multisite Signups Extras St Theresa
+Plugin URI:        https://github.com/afragen/custom-multisite-signups-extra-sts
+GitHub Plugin URI: https://github.com/afragen/custom-multisite-signups-extra-sts
+GitHub Branch:     master
 Description: This plugin adds custom registration data using hooks to the Custom Multisite Signups plugin for St. Theresa School
-Requires: Custom Multisite Signups
-Version: 0.1.0
-Author: Andy Fragen
-Author URI: http://thefragens.com
-License: GNU General Public License v2
-License URI: http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+Requires:          Custom Multisite Signups
+Version:           0.1.0
+Author:            Andy Fragen
+Author URI:        http://thefragens.com
+License:           GNU General Public License v2
+License URI:       http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 */
 
 class Custom_Multisite_Signups_Extras {
