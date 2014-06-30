@@ -3,30 +3,30 @@
 /*
 Plugin Name:       Custom Multisite Signups Extras St Theresa
 Plugin URI:        https://github.com/afragen/custom-multisite-signups-extra-sts
-GitHub Plugin URI: https://github.com/afragen/custom-multisite-signups-extra-sts
-GitHub Branch:     master
+Description:       This plugin adds custom registration data using hooks to the <a href="https://github.com/afragen/custom-multisite-signups">Custom Multisite Signups</a> plugin for St. Theresa School.
 Requires:          Custom Multisite Signups
-Version:           0.1.0
 Author:            Andy Fragen
 Author URI:        http://thefragens.com
+Version:           0.2.0
 License:           GNU General Public License v2
 License URI:       http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
-Description: This plugin adds custom registration data using hooks to the <a href="https://github.com/afragen/custom-multisite-signups">Custom Multisite Signups</a> plugin for St. Theresa School.
+GitHub Plugin URI: https://github.com/afragen/custom-multisite-signups-extra-sts
+GitHub Branch:     master
 */
 
-class Custom_Multisite_Signups_Extras {
+class Custom_Multisite_Signups_Extras_STS extends Custom_Multisite_Signups {
 
 	public function __construct() {
-		add_filter( 'cms_add_extra_signup_fields', array( $this, 'my_extra_fields' ) );
-		add_filter( 'cms_extra_fields_css_selectors', array( $this, 'my_extra_fields_selectors' ) );
-		add_filter( 'cms_extra_fields_css', array( $this, 'my_extra_fields_css' ) );
-		add_filter( 'cms_wpmu_validate_user_signup', array( $this, 'my_validate_user_signup' ) );
-		add_action( 'cms_extra_signup_meta', array( $this, 'my_cms_extra_signup_meta' ) );
-		add_filter( 'cms_show_extra_profile_fields', array( $this, 'my_show_extra_profile_fields' ) );
-		add_action( 'cms_save_extra_profile_fields', array( $this, 'my_save_extra_profile_fields' ) );
+		add_filter( 'cms_add_extra_signup_fields', array( $this, 'extra_fields' ) );
+		add_filter( 'cms_extra_fields_css_selectors', array( $this, 'extra_fields_selectors' ) );
+		add_filter( 'cms_extra_fields_css', array( $this, 'extra_fields_css' ) );
+		add_filter( 'cms_wpmu_validate_user_signup', array( $this, 'validate_user_signup' ) );
+		add_action( 'cms_extra_signup_meta', array( $this, 'cms_extra_signup_meta' ) );
+		add_filter( 'cms_show_extra_profile_fields', array( $this, 'how_extra_profile_fields' ) );
+		add_action( 'cms_save_extra_profile_fields', array( $this, 'save_extra_profile_fields' ) );
 	}
 
-	public function my_extra_fields( $html ) {
+	public function extra_fields( $html ) {
 		$street = isset( $_REQUEST['street'] ) ? (string) $_REQUEST['street'] : '';
 		$extra_fields[] = '<label>Street</label>';
 		$extra_fields[] = '<input id="street" name="street" type="text" value="' . $street . '" />';
@@ -40,17 +40,17 @@ class Custom_Multisite_Signups_Extras {
 		echo $html;
 	}
 
-	public function my_extra_fields_selectors( $selectors ) {
+	public function extra_fields_selectors( $selectors ) {
 		$selectors .= ', .mu_register #street, .mu_register #zip';
 		return $selectors;
 	}
 
-	public function my_extra_fields_css( $css ) {
+	public function extra_fields_css( $css ) {
 		$css .= ' /* CSS comment */ ';
 		return $css;
 	}
 
-	public function my_validate_user_signup( $result ) {
+	public function validate_user_signup( $result ) {
 		if ( empty( $_POST['street'] ) ) {
 			$result['errors']->add( 'street', __( 'You must include a street address.' ) );
 			echo '<p class="error">', $result['errors']->get_error_message('street'), '</p>';
@@ -64,14 +64,14 @@ class Custom_Multisite_Signups_Extras {
 		return $result;
 	}
 
-	public function my_cms_extra_signup_meta() {
+	public function cms_extra_signup_meta() {
 		return array(
 				'street' => sanitize_text_field( $_POST['street'] ),
 				'zip'    => sanitize_text_field( $_POST['zip'] ),
 				);
 	}
 
-	public function my_show_extra_profile_fields( $user ) {
+	public function show_extra_profile_fields( $user ) {
 
 		$html[] = '<th><label for="street" id="street">' . __( 'Street' ) . '</label></th>';
 		$html[] = '<td>';
@@ -95,7 +95,7 @@ class Custom_Multisite_Signups_Extras {
 
 	}
 
-	public function my_save_extra_profile_fields() {
+	public function save_extra_profile_fields() {
 		return array( 'street', 'zip' );
 	}
 
